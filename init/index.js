@@ -17,6 +17,10 @@ connectDB().then(() => {
 
 const initDb = async ()=>{
     await Listing.deleteMany({});
+    initData.data = initData.data.map((obj)=>({
+      ...obj,
+      owner: '68a0650c9fd7bf892ca4ce45' // Replace with a valid user ID from your database
+    }));
     await Listing.insertMany(initData.data);
     console.log('Data was initialized');
 

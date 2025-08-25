@@ -6,6 +6,7 @@ body {
 }
 .container {
     flex: 1;
+    
 }
  /* navbar */
 .navbar {
@@ -17,7 +18,7 @@ body {
     font-size: 2rem;
     margin-left: 1rem;
 }
-.nev-link {
+.nav-link {
     color: #222222 !important;
     /* font-size: 1.5rem;
     margin-left: 1rem; */
@@ -51,8 +52,16 @@ body {
     background-color: #f2f2f2;
     display:flex;
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: space-evenly;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    
+}
+/* make footer full-bleed across viewport */
+footer {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
 }
 /* cards */
 .listing-card{
@@ -67,7 +76,7 @@ body {
 }
 .card-body{
     padding: 0 !important;
-    text-align: center !important;
+    /* text-align: center !important; */
 }
 .card-text p{
     font-weight: 400 !important;
