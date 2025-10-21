@@ -10,13 +10,27 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const ExpressError = require('./utils/ExpressError.js');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const flash = require('connect-flash');
 const passport = require('passport');
 const localStrategy = require('passport-local');
 const User = require('./MODELS/user.js'); // Assuming you have a user model defined in user.js
 
+const store = MongoStore.create({
+  mongoUrl: process.env.ATLASDB_URL,
+  touchAfter: 24 * 60 * 60, // time period in seconds
+  crypto: {
+    secret: process.env.SECRET,
+  }
+});
+
+store.on("error", function(e){
+  console.log("SESSION STORE ERROR", e);
+});
+
 const sessionOptions = {
-  secret:"thisshouldbeasecret",
+  store: store,
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -29,6 +43,8 @@ const sessionOptions = {
 // app.get('/', (req, res) => {
 //   res.send("Hi i'm root");
 // });
+
+
 
 app.use(session(sessionOptions));
 app.use(flash());
@@ -45,9 +61,12 @@ const listingsRouter = require('./routes/listing.js');
 const reviewsRouter = require('./routes/review.js');
 const userRouter = require('./routes/user.js'); // Assuming you have a user route defined in user.js
 
-const MONGO_URI = 'mongodb://localhost:27017/wanderlust';
+// const MONGO_URI = 'mongodb://localhost:27017/wanderlust';
+const dburl = process.env.ATLASDB_URL;
+
+
 async function connectDB() {
-  await mongoose.connect(MONGO_URI);
+  await mongoose.connect(dburl);
     
 };
 connectDB().then(() => {
